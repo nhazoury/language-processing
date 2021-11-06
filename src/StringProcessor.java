@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class StringProcessor {
@@ -19,19 +20,20 @@ public class StringProcessor {
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
             if (c == divider) {
-                word = split(word, ans);
+                word = cut(word, ans);
             } else if (important.contains(c)) {
-                word = split(word, ans);
+                word = cut(word, ans);
                 word.append(c);
+                word = cut(word, ans);
             } else {
                 word.append(c);
             }
         }
-
+        ans.removeAll(Collections.singleton(""));
         return ans;
     }
 
-    private StringBuilder split(StringBuilder currentWord, List<String> sentence) {
+    private StringBuilder cut(StringBuilder currentWord, List<String> sentence) {
         sentence.add(currentWord.toString());
         return new StringBuilder();
     }

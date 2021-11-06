@@ -26,6 +26,4 @@ public class StringProcessorTests {
 
         Assert.assertEquals(answer, result);
     }
-
-
 }
