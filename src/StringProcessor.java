@@ -87,4 +87,17 @@ public class StringProcessor {
     return true;
   }
 
+  // taking reverse polish notation, generate an expression
+  public Expression generateExpression(Queue<String> processed) {
+    /*
+    Expression expr = new ExpressionBuilder().build();
+    for (String item : processed) {
+      if (isNumber(item)) {
+        int num = Integer.parseInt(item);
+        expr.addArgument(num);
+      }
+    }
+    */
+    return null;
+  }
 }
