@@ -1,7 +1,11 @@
 public class SimpleExpr implements Expression {
-    int num;
+    double num;
 
-    public int eval() {
+    public SimpleExpr(double num) {
+        this.num = num;
+    }
+
+    public double eval() {
         return num;
     }
 }

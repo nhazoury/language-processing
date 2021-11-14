@@ -1,3 +1,3 @@
 public interface Expression {
-    int eval();
+    double eval();
 }

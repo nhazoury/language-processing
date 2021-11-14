@@ -1,48 +1,86 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class StringProcessor {
 
-    public StringProcessor() {
+  public StringProcessor() {}
+
+  /* Splits string into words without spaces as a List of strings.
+     Existing functions already do this, but why not try from scratch?
+   */
+  public List<String> splitUp(String str, char divider, List<Character> important) {
+    ArrayList<String> ans = new ArrayList<>();
+    StringBuilder word = new StringBuilder();
+
+    // just to make sure the final word is actually included
+    str = str + ' ';
+
+    for (int i = 0; i < str.length(); i++) {
+      char c = str.charAt(i);
+      if (c == divider) {
+        word = cut(word, ans);
+      } else if (important.contains(c)) {
+        word = cut(word, ans);
+        word.append(c);
+        word = cut(word, ans);
+      } else {
+        word.append(c);
+      }
     }
+    ans.removeAll(Collections.singleton(""));
+    return ans;
+  }
 
-    /* Splits string into words without spaces as a List of strings.
-    Existing functions already do this, but why not try from scratch?
-     */
-    public List<String> splitUp(String str, char divider, List<Character> important) {
-        ArrayList<String> ans = new ArrayList<>();
-        StringBuilder word = new StringBuilder();
+  private StringBuilder cut(StringBuilder currentWord, List<String> sentence) {
+    sentence.add(currentWord.toString());
+    return new StringBuilder();
+  }
 
-        // just to make sure the final word is actually included
-        str = str + ' ';
+  /* Only pass maths into this!!
+     Uses Djikstra's shunting yard algorithm */
+  public Queue<String> shuntingyard(List<String> expressions) {
+    Queue<String> output = new ArrayDeque<>();
 
-        for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
-            if (c == divider) {
-                word = cut(word, ans);
-            } else if (important.contains(c)) {
-                word = cut(word, ans);
-                word.append(c);
-                word = cut(word, ans);
-            } else {
-                word.append(c);
-            }
+    // stack of operators, but not true operators since these also
+    // include ( and )
+    Stack<String> opStack = new Stack<>();
+    for (String str : expressions) {
+      if (isNumber(str)) {
+        output.add(str);
+      } else if (Operator.isOperator(str)) {
+        String top = opStack.peek();
+        Operator currOp = Operator.translate(str);
+        Operator topOp = Operator.translate(top);
+        while (!top.equals("(") && Operator.less(currOp, topOp)) {
+          output.add(opStack.pop());
+          top = opStack.peek();
+          topOp = Operator.translate(top);
         }
-        ans.removeAll(Collections.singleton(""));
-        return ans;
-    }
-
-    private StringBuilder cut(StringBuilder currentWord, List<String> sentence) {
-        sentence.add(currentWord.toString());
-        return new StringBuilder();
-    }
-
-    /* Only pass maths into this!! */
-    public Expression process(List<String> expressions) {
-        for (String str : expressions) {
-            // TODO: process maths, stack?, etc.
+        opStack.push(str);
+      } else if (str.equals("(")) {
+        opStack.push(str);
+      } else if (str.equals(")")) {
+        while (!opStack.peek().equals("(")) {
+          output.add(opStack.pop());
         }
-        return null;
+        opStack.pop();
+      }
     }
+
+    while (!opStack.isEmpty()) {
+      output.add(opStack.pop());
+    }
+
+    return output;
+  }
+
+  public boolean isNumber(String num) {
+    for (int i = 0; i < num.length(); i++) {
+      char c = num.charAt(i);
+      if (!Character.isDigit(c)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 }
