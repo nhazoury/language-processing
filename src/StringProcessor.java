@@ -47,14 +47,18 @@ public class StringProcessor {
       if (isNumber(str)) {
         output.add(str);
       } else if (Operator.isOperator(str)) {
-        String top = opStack.peek();
-        Operator currOp = Operator.translate(str);
-        Operator topOp = Operator.translate(top);
-        while (!top.equals("(") && Operator.less(currOp, topOp)) {
-          output.add(opStack.pop());
-          top = opStack.peek();
-          topOp = Operator.translate(top);
+        if (!opStack.isEmpty()) {
+          String top = opStack.peek();
+          Operator currOp = Operator.translate(str);
+          Operator topOp = Operator.translate(top);
+
+          while (!opStack.isEmpty() && !top.equals("(") && Operator.less(currOp, topOp)) {
+            output.add(opStack.pop());
+            top = opStack.peek();
+            topOp = Operator.translate(top);
+          }
         }
+
         opStack.push(str);
       } else if (str.equals("(")) {
         opStack.push(str);
