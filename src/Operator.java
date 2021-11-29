@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public enum Operator {
     ADD(0, "+"),
     SUB(0, "-"),
@@ -12,14 +9,6 @@ public enum Operator {
     Operator(int precedence, String strVersion) {
         this.precedence = precedence;
         this.strVersion = strVersion;
-    }
-
-    public int getPrecedence() {
-        return precedence;
-    }
-
-    public String getStrVersion() {
-        return strVersion;
     }
 
     public static boolean less(Operator less, Operator more) {
@@ -55,5 +44,13 @@ public enum Operator {
             case MUL -> x * y;
             case DIV -> x / y;
         };
+    }
+
+    public int getPrecedence() {
+        return precedence;
+    }
+
+    public String getStrVersion() {
+        return strVersion;
     }
 }
