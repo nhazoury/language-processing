@@ -3,9 +3,30 @@ import java.util.*;
 public class StringProcessor {
   char divider;
   List<Character> important;
+  String input;
+  private int answer;
+  private boolean error;
+  private NLPDisplay view;
+
   public StringProcessor(char divider, List<Character> important) {
     this.divider = divider;
     this.important = important;
+  }
+
+  public boolean getError() {
+    return error;
+  }
+
+  public int getAnswer() {
+    return answer;
+  }
+
+  public void setInput(String input) {
+    this.input = input;
+  }
+
+  public void setView(NLPDisplay view) {
+    this.view = view;
   }
 
   /* Splits string into words without spaces as a List of strings.
@@ -97,7 +118,7 @@ public class StringProcessor {
   }
 
   // taking reverse polish notation, generate an answer
-  public static int eval(Queue<String> processed) throws Exception {
+  public static int calc(Queue<String> processed) throws Exception {
     Stack<Integer> stack = new Stack<>();
     while (!processed.isEmpty()) {
       String item = processed.poll();
@@ -118,21 +139,33 @@ public class StringProcessor {
     }
 
     if (stack.size() != 1) {
-      throw new Exception("Not enough operands - try again.");
+      throw new Exception("Invalid input - try again.");
     }
 
     return stack.pop();
   }
 
-  public int evalRPN(String input) throws Exception {
-    List<String> tokenised = splitUp(input);
-    Queue<String> tokenisedQueue = toRPNQueue(tokenised);
-    return StringProcessor.eval(tokenisedQueue);
+  public void evalRPN() {
+    try {
+      List<String> tokenised = splitUp(input);
+      Queue<String> tokenisedQueue = toRPNQueue(tokenised);
+      answer = StringProcessor.calc(tokenisedQueue);
+    } catch (Exception e) {
+      error = true;
+    }
   }
 
-  public int eval(String input) throws Exception {
-    List<String> tokenised = splitUp(input);
-    Queue<String> tokenisedQueue = shuntingYard(tokenised);
-    return StringProcessor.eval(tokenisedQueue);
+  public void eval() {
+    try {
+      List<String> tokenised = splitUp(input);
+      Queue<String> tokenisedQueue = shuntingYard(tokenised);
+      answer = StringProcessor.calc(tokenisedQueue);
+      error = false;
+    } catch (Exception e) {
+      error = true;
+    }
+    if (view != null) {
+      view.update(this);
+    }
   }
 }

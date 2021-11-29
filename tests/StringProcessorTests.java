@@ -65,25 +65,22 @@ public class StringProcessorTests {
     @Test
     public void correctReversePolishNotationEvaluation() {
         String input = "3 4 2 * +";
+        strProc.setInput(input);
         int answer = 11;
-        try {
-            int result = strProc.evalRPN(input);
-            assertEquals(answer, result);
-        } catch (Exception e) {
-            fail();
-        }
+        strProc.evalRPN();
+        int result = strProc.getAnswer();
+        assertEquals(answer, result);
     }
 
     @Test
     public void correctNormalEvaluation() {
+
         String input = "3 * (4 + 3)";
+        strProc.setInput(input);
         int answer = 21;
-        try {
-            int result = strProc.eval(input);
-            assertEquals(answer, result);
-        } catch (Exception e) {
-            fail();
-        }
+        strProc.eval();
+        int result = strProc.getAnswer();
+        assertEquals(answer, result);
     }
 
 }
