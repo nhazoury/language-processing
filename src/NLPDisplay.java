@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 public class NLPDisplay {
   private final JTextField inputText = new JTextField(15);
   private final JButton calculateButton = new JButton("Calculate");
-  private final JTextField answer = new JTextField(5);
+  private final JTextField answer = new JTextField(20);
 
   public NLPDisplay(ActionListener controller) {
     JFrame frame = new JFrame("Natural Language Processing");
