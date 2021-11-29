@@ -50,6 +50,23 @@ public class StringProcessorTests {
     Assert.assertTrue(queueEquals(result, answer));
   }
 
+  @Test
+  public void doesShuntingYardCorrectly2() {
+    String str = "3 + 1 + 2";
+    List<String> tokenised = strProc.splitUp(str);
+
+    ArrayDeque<String> answer = new ArrayDeque<>();
+    answer.add("3");
+    answer.add("1");
+    answer.add("+");
+    answer.add("2");
+    answer.add("+");
+
+    ArrayDeque<String> result = (ArrayDeque<String>) strProc.shuntingYard(tokenised);
+
+    Assert.assertTrue(queueEquals(result, answer));
+  }
+
   private boolean queueEquals(ArrayDeque<String> a, ArrayDeque<String> b) {
     for (String aItem : a) {
       String bItem = b.pop();
@@ -80,4 +97,6 @@ public class StringProcessorTests {
     int result = strProc.getAnswer();
     assertEquals(answer, result);
   }
+
+
 }
