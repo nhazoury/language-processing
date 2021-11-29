@@ -17,6 +17,7 @@ public class NLPDisplay {
         panel.add(calculateButton);
         panel.add(answer);
         inputText.setEditable(true);
+        answer.setEditable(false);
         frame.getContentPane().add(panel);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
