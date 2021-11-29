@@ -43,4 +43,17 @@ public enum Operator {
         }
         return null;
     }
+
+    public static int evalStr(int x, int y, String op) {
+        return eval(x, y, translate(op));
+    }
+
+    public static int eval(int x, int y, Operator op) {
+        return switch (op) {
+            case ADD -> x + y;
+            case SUB -> x - y;
+            case MUL -> x * y;
+            case DIV -> x / y;
+        };
+    }
 }
