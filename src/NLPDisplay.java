@@ -16,13 +16,18 @@ public class NLPDisplay {
         panel.add(inputText);
         panel.add(calculateButton);
         panel.add(answer);
+        inputText.setEditable(true);
         frame.getContentPane().add(panel);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
+    public String getInput() {
+        return inputText.getText();
+    }
+
     public void update(StringProcessor strProc) {
-        String currentInput = inputText.getText();
+
         if (strProc.getError()) {
             answer.setText("ERROR");
         } else {

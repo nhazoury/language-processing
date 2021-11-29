@@ -16,6 +16,8 @@ public class Calculator {
     class Controller implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            String input = view.getInput();
+            strProc.setInput(input);
             strProc.eval();
         }
     }
