@@ -81,10 +81,10 @@ public class StringProcessorTests {
   public void correctReversePolishNotationEvaluation() {
     String input = "3 4 2 * +";
     strProc.setInput(input);
-    int answer = 11;
+    double answer = 11;
     strProc.evalRPN();
-    int result = strProc.getAnswer();
-    assertEquals(answer, result);
+    double result = strProc.getAnswer();
+    assertEquals(answer, result, 0.1);
   }
 
   @Test
@@ -92,10 +92,10 @@ public class StringProcessorTests {
 
     String input = "3 * (4 + 3)";
     strProc.setInput(input);
-    int answer = 21;
+    double answer = 21;
     strProc.eval();
-    int result = strProc.getAnswer();
-    assertEquals(answer, result);
+    double result = strProc.getAnswer();
+    assertEquals(answer, result, 0.1);
   }
 
 

@@ -1,10 +1,10 @@
 import java.util.*;
 
 public class StringProcessor {
-  char divider;
-  List<Character> important;
-  String input;
-  private int answer;
+  private final char divider;
+  private final List<Character> important;
+  private String input;
+  private double answer;
   private boolean error;
   private NLPDisplay view;
 
@@ -13,11 +13,52 @@ public class StringProcessor {
     this.important = important;
   }
 
+  public static Queue<String> toRPNQueue(List<String> input) {
+    return new ArrayDeque<>(input);
+  }
+
+  private static boolean isNumber(String num) {
+    try {
+      Double.parseDouble(num);
+      return true;
+    } catch (NumberFormatException e) {
+      return false;
+    }
+  }
+
+  // taking reverse polish notation, generate an answer
+  public static double calc(Queue<String> processed) throws Exception {
+    Stack<Double> stack = new Stack<>();
+    while (!processed.isEmpty()) {
+      String item = processed.poll();
+      if (isNumber(item)) {
+        stack.add(Double.parseDouble(item));
+      } else {
+        double x, y;
+        try {
+          y = stack.pop();
+          x = stack.pop();
+        } catch (EmptyStackException e) {
+          throw new Exception("Invalid input - try again.");
+        }
+
+        double result = Operator.evalStr(x, y, item);
+        stack.push(result);
+      }
+    }
+
+    if (stack.size() != 1) {
+      throw new Exception("Invalid input - try again.");
+    }
+
+    return stack.pop();
+  }
+
   public boolean getError() {
     return error;
   }
 
-  public int getAnswer() {
+  public double getAnswer() {
     return answer;
   }
 
@@ -34,8 +75,8 @@ public class StringProcessor {
   }
 
   /* Splits string into words without spaces as a List of strings.
-     Existing functions already do this, but why not try from scratch?
-   */
+    Existing functions already do this, but why not try from scratch?
+  */
   public List<String> splitUp(String str) {
     ArrayList<String> ans = new ArrayList<>();
     StringBuilder word = new StringBuilder();
@@ -64,12 +105,8 @@ public class StringProcessor {
     return new StringBuilder();
   }
 
-  public static Queue<String> toRPNQueue(List<String> input) {
-    return new ArrayDeque<>(input);
-  }
-
   /* Only pass maths into this!!
-     Uses Dijkstra's shunting yard algorithm */
+  Uses Dijkstra's shunting yard algorithm */
   public Queue<String> shuntingYard(List<String> expressions) {
     Queue<String> output = new ArrayDeque<>();
 
@@ -103,7 +140,6 @@ public class StringProcessor {
 
         opStack.push(str);
       }
-
     }
 
     while (!opStack.isEmpty()) {
@@ -111,44 +147,6 @@ public class StringProcessor {
     }
 
     return output;
-  }
-
-  private static boolean isNumber(String num) {
-    for (int i = 0; i < num.length(); i++) {
-      char c = num.charAt(i);
-      if (!Character.isDigit(c)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  // taking reverse polish notation, generate an answer
-  public static int calc(Queue<String> processed) throws Exception {
-    Stack<Integer> stack = new Stack<>();
-    while (!processed.isEmpty()) {
-      String item = processed.poll();
-      if (isNumber(item)) {
-        stack.add(Integer.parseInt(item));
-      } else {
-        int x, y;
-        try {
-          y = stack.pop();
-          x = stack.pop();
-        } catch (EmptyStackException e) {
-          throw new Exception("Invalid input - try again.");
-        }
-
-        int result = Operator.evalStr(x, y, item);
-        stack.push(result);
-      }
-    }
-
-    if (stack.size() != 1) {
-      throw new Exception("Invalid input - try again.");
-    }
-
-    return stack.pop();
   }
 
   public void evalRPN() {
